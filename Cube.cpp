@@ -2,8 +2,12 @@
 #include <cmath>
 #include <cstdlib>
 #include <iomanip>
+#include <utility>
 
 #include "Cube.h"
+
+Cube::Cube()
+{}
 
 Cube::Cube(std::string fname)
 {
@@ -51,13 +55,13 @@ Cube::Cube(std::string fname)
     }
 }
 
-void Cube::print(std::ostream& out)
+void Cube::print(std::ostream& out) const
 {
     print_header(out);
     print_data(out);
 }
 
-void Cube::print_header(std::ostream& out)
+void Cube::print_header(std::ostream& out) const
 {
     // Print first two comment lines
     out << comment1 << std::endl;
@@ -109,7 +113,7 @@ void Cube::print_header(std::ostream& out)
     }
 }
 
-void Cube::print_data(std::ostream& out,int lines)
+void Cube::print_data(std::ostream& out,int lines) const
 {
     // Total number of voxels
     unsigned long int Nvol(Na*Nb*Nc);
@@ -139,7 +143,7 @@ void Cube::print_data(std::ostream& out,int lines)
     }
 }
 
-bool Cube::compare_headers(Cube& cube,double threshold)
+bool Cube::header_is_equal(const Cube& cube,double threshold) const
 {
     // Compare number of atoms
     if(Natoms != cube.Natoms)
@@ -202,4 +206,64 @@ bool Cube::compare_headers(Cube& cube,double threshold)
     }
 
     return true;
+}
+
+void Cube::copy_header(const Cube& cube)
+{
+    // Copy first two comment lines
+    comment1 = cube.comment1;
+    comment2 = cube.comment2;
+
+    // Copy number of atoms and origin
+    Natoms = cube.Natoms;
+    origin = cube.origin;
+
+    // Copy voxel properties
+    Na = cube.Na;
+    Nb = cube.Nb;
+    Nc = cube.Nc;
+    a = cube.a;
+    b = cube.b;
+    c = cube.c;
+
+    // Copy atoms
+    atoms = cube.atoms;
+
+    // Total number of voxels
+    unsigned long int Nvol(Na*Nb*Nc);
+
+    // Resize data and initialize all elements to zero
+    data.clear();
+    data.resize(Nvol,0.0);
+
+}
+
+Cube Cube::operator+(const Cube& cube) const
+{
+    if( ! header_is_equal(cube) )
+    {
+        std::cerr << "ERROR: Cube files have different header." << std::endl;
+
+        std::exit(-1);
+    }
+
+    // Create empty cube file
+    Cube sum;
+
+    // Copy current header to new cube file
+    sum.copy_header(*this);
+
+    // Total number of voxels
+    unsigned long int Nvol(Na*Nb*Nc);
+
+    // Preallocate data of new cube file
+    sum.data.resize(Nvol);
+
+    // Sum voxel by voxel
+    for(unsigned long int i(0); i < Nvol; i++)
+    {
+        sum.data[i] = data[i] + cube.data[i];
+    }
+
+    return sum;
 }

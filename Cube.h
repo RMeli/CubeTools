@@ -6,15 +6,20 @@
 class Cube
 {
 public:
+    Cube();
     Cube(std::string fname);
 
-    void print(std::ostream& out);
-    void print_header(std::ostream& out);
-    void print_data(std::ostream& out,int lines=0);
+    void print(std::ostream& out) const;
+    void print_header(std::ostream& out) const;
+    void print_data(std::ostream& out,int lines=0) const;
 
-    bool compare_headers(Cube& cube,double threshold=1e-12);
+    bool header_is_equal(const Cube& cube,double threshold=1e-12) const;
+    void copy_header(const Cube& cube);
+
+    Cube operator+(const Cube& cube) const;
 
 private:
+
     // Fist two lines of the Cube file (comments)
     std::string comment1, comment2;
 
