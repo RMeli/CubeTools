@@ -9,6 +9,8 @@ public:
     Cube(std::string fname);
 
     void print(std::ostream& out);
+    void print_header(std::ostream& out);
+    void print_data(std::ostream& out,int lines=0);
 
 private:
     // Fist two lines of the Cube file (comments)

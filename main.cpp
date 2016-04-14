@@ -12,5 +12,11 @@ int main()
 
     cout << "Cube file loaded!" << endl;
 
-    c.print(cout);
+    cout << "\nCube file header:" << endl;
+    c.print_header(cout);
+
+    cout << "\nCube file data:" << endl;
+    c.print_data(cout,5);
+    cout << "..." << endl;
+    c.print_data(cout,-5);
 }
