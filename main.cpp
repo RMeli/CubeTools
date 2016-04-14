@@ -19,4 +19,9 @@ int main()
     c.print_data(cout,5);
     cout << "..." << endl;
     c.print_data(cout,-5);
+
+    cout << "\nCube file data (all):" << endl;
+    c.print(cout);
+
+    return 0;
 }
