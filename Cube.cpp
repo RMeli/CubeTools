@@ -138,3 +138,68 @@ void Cube::print_data(std::ostream& out,int lines)
         }
     }
 }
+
+bool Cube::compare_headers(Cube& cube,double threshold)
+{
+    // Compare number of atoms
+    if(Natoms != cube.Natoms)
+    {
+        return false;
+    }
+
+    // Compare origin coordinate by coordinate
+    for(unsigned int i(0); i < 3; i++)
+    {
+        if( std::abs(origin[i] - cube.origin[i]) > threshold )
+        {
+            return false;
+        }
+    }
+
+    // Compare number of voxels in every direction
+    if( (Na != cube.Na) || (Nb != cube.Nb) || (Nc != cube.Nc) )
+    {
+        return false;
+    }
+
+    // Compare axis A
+    for(unsigned int i(0); i < 3; i++)
+    {
+        if( std::abs(a[i] - cube.a[i]) > threshold )
+        {
+            return false;
+        }
+    }
+
+    // Compare axis B
+    for(unsigned int i(0); i < 3; i++)
+    {
+        if( std::abs(b[i] - cube.b[i]) > threshold )
+        {
+            return false;
+        }
+    }
+
+    // Compare axis C
+    for(unsigned int i(0); i < 3; i++)
+    {
+        if( std::abs(c[i] - cube.c[i]) > threshold )
+        {
+            return false;
+        }
+    }
+
+    // Compare atoms
+    for(unsigned int i(0); i < Natoms; i++)
+    {
+        for(unsigned int j(0); j < 5; j++)
+        {
+            if( std::abs(atoms[i][j] - cube.atoms[i][j]) > threshold )
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
