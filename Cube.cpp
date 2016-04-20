@@ -143,14 +143,8 @@ void Cube::print_data(std::ostream& out,int lines) const
     }
 }
 
-bool Cube::header_is_equal(const Cube& cube,double threshold) const
+bool Cube::header_is_compatible(const Cube& cube,double threshold) const
 {
-    // Compare number of atoms
-    if(Natoms != cube.Natoms)
-    {
-        return false;
-    }
-
     // Compare origin coordinate by coordinate
     for(unsigned int i(0); i < 3; i++)
     {
@@ -191,6 +185,23 @@ bool Cube::header_is_equal(const Cube& cube,double threshold) const
         {
             return false;
         }
+    }
+
+    return true;
+}
+
+bool Cube::header_is_equal(const Cube& cube,double threshold) const
+{
+    // Compare number of atoms
+    if(Natoms != cube.Natoms)
+    {
+        return false;
+    }
+
+    // Compare origin, number of voxels and axis
+    if( ! header_is_compatible(cube,threshold) )
+    {
+        return false;
     }
 
     // Compare atoms
@@ -240,9 +251,20 @@ void Cube::copy_header(const Cube& cube)
 
 Cube Cube::operator+(const Cube& cube) const
 {
-    if( ! header_is_equal(cube) )
+    // Check if the headers of the two cube files (*THIS and CUBE) are compatible
+    if( header_is_compatible(cube) )
     {
-        std::cerr << "ERROR: Cube files have different header." << std::endl;
+        // Check if the headers of the two cube files (*THIS and CUBE) are equal
+        if( ! header_is_equal(cube) )
+        {
+            // Warn the user that the cube files contain different atoms and/or atomic positions
+            std::cerr << "\nWARNING: Cube files contains different atoms or atomic positions." << std::endl;
+            std::cerr << "         The header of the first Cube will be considered for the sum.\n" << std::endl;
+        }
+    }
+    else // Cube file are not compatible and can't be summed (TODO: origin shift)
+    {
+        std::cerr << "\nERROR: Cube files are not compatible.\n" << std::endl;
 
         std::exit(-1);
     }

@@ -13,6 +13,7 @@ public:
     void print_header(std::ostream& out) const;
     void print_data(std::ostream& out,int lines=0) const;
 
+    bool header_is_compatible(const Cube& cube,double threshold=1e-12) const;
     bool header_is_equal(const Cube& cube,double threshold=1e-12) const;
     void copy_header(const Cube& cube);
 

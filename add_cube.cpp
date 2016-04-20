@@ -7,6 +7,10 @@ using namespace std;
 
 int main(int argc,char *argv[])
 {
+    cerr << "\n#########" << endl;
+    cerr << "CUBE_ADD" << endl;
+    cerr << "#########\n" << endl;
+
     // Check the number of commandi line arguments
     if( argc < 3)
     {
@@ -45,6 +49,8 @@ int main(int argc,char *argv[])
     }
 
     out.print(cout);
+
+    cerr << "\nCUBE_ADD ended succesfully!\n" << endl;
 
     return 0;
 }
