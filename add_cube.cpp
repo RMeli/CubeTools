@@ -18,7 +18,11 @@ int main(int argc,char *argv[])
 
     // Load first cube file
     string s(argv[1]);
+    cerr << "Loading... " << s;
     Cube tmp(s);
+    cerr << " ...Loaded!" << endl;
+
+
 
     // Declare output cube file
     Cube out;
@@ -33,8 +37,10 @@ int main(int argc,char *argv[])
         if( (i+1) != argc )
         {
             // Load successive cube file
-            s = argv[i];
+            s = argv[i+1];
+            cerr << "Loading... " << s;
             tmp = Cube(s);
+            cerr << " ...Loaded!" << endl;
         }
     }
 
