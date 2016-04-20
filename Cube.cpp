@@ -249,8 +249,15 @@ void Cube::copy_header(const Cube& cube)
 
 }
 
-Cube Cube::operator+(const Cube& cube) const
+Cube Cube::addsub(const Cube& cube,int pm) const
 {
+    if( std::abs(pm) != 1 )
+    {
+        std::cerr << "\nERROR: PM should be +1 or -1.\n" << std::endl;
+
+        std::exit(-1);
+    }
+
     // Check if the headers of the two cube files (*THIS and CUBE) are compatible
     if( header_is_compatible(cube) )
     {
@@ -270,22 +277,32 @@ Cube Cube::operator+(const Cube& cube) const
     }
 
     // Create empty cube file
-    Cube sum;
+    Cube sumsub;
 
     // Copy current header to new cube file
-    sum.copy_header(*this);
+    sumsub.copy_header(*this);
 
     // Total number of voxels
     unsigned long int Nvol(Na*Nb*Nc);
 
     // Preallocate data of new cube file
-    sum.data.resize(Nvol);
+    sumsub.data.resize(Nvol);
 
     // Sum voxel by voxel
     for(unsigned long int i(0); i < Nvol; i++)
     {
-        sum.data[i] = data[i] + cube.data[i];
+        sumsub.data[i] = data[i] + pm * cube.data[i]; // PM is +1 (addition) or -1 (subtraction)
     }
 
-    return sum;
+    return sumsub;
+}
+
+Cube Cube::operator+(const Cube& cube) const
+{
+    return addsub(cube,+1);
+}
+
+Cube Cube::operator-(const Cube& cube) const
+{
+    return addsub(cube,-1);
 }
