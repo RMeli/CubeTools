@@ -1,19 +1,19 @@
 CXX=g++
 CFLAGS=-Wall -O3 -std=c++11
 
-all: test add_cube
+all: test cube_add
 
 test: main.o cube.o
 	$(CXX) $(CFLAGS) main.o cube.o -o test.x
 
-add_cube: add_cube.o cube.o
-	$(CXX) $(CFLAGS) add_cube.o cube.o -o add_cube.x
+cube_add: cube_add.o cube.o
+	$(CXX) $(CFLAGS) cube_add.o cube.o -o cube_add.x
 
 main.o: main.cpp Cube.cpp
 	$(CXX) $(CFLAGS) -c main.cpp
 
-add_cube.o: add_cube.cpp Cube.cpp
-	$(CXX) $(CFLAGS) -c add_cube.cpp
+cube_add.o: cube_add.cpp Cube.cpp
+	$(CXX) $(CFLAGS) -c cube_add.cpp
 
 cube.o: Cube.cpp
 	$(CXX) $(CFLAGS) -c Cube.cpp
