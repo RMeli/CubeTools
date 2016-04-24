@@ -11,6 +11,9 @@ public:
     // Create cube file from data
     Cube(std::string fname);
 
+    // Load CUbe fro file
+    void load(std::string filename);
+
     // Printing routines (whole cube, only header or only data)
     void print(std::ostream& out) const;
     void print_header(std::ostream& out) const;

@@ -28,6 +28,11 @@ Cube::Cube()
 
 Cube::Cube(std::string fname)
 {
+    load(fname);
+}
+
+void Cube::load(std::string fname)
+{
     // Open Cube file
     std::fstream in(fname);
 
@@ -66,9 +71,9 @@ Cube::Cube(std::string fname)
     data.resize(Nvol);
 
     // Store volumetric data
-    for(unsigned long int i(0); i < Nvol; i += 6)
+    for(unsigned long int i(0); i < Nvol; i ++)
     {
-        in >> data[i] >> data[i+1] >> data[i+2] >> data[i+3] >> data[i+4] >> data[i+5];
+        in >> data[i];
     }
 }
 
