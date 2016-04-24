@@ -3,6 +3,9 @@
 #include <array>
 #include <vector>
 
+// Define a rank-3 tensor
+typedef std::vector<std::vector<std::vector<double>>> Matrix;
+
 class Cube
 {
 public:
@@ -30,6 +33,17 @@ public:
     Cube operator+(const Cube& cube) const;
     // Subtract two cube files
     Cube operator-(const Cube& cube) const;
+
+    // Return reshaped DATA (rank-3 tensor instead of vector)
+    Matrix reshape() const;
+
+    // Return Cube file origin
+    std::array<double,3> get_origin() const;
+
+    // Length of the voxel along a, b or c
+    double da() const;
+    double db() const;
+    double dc() const;
 
 private:
 

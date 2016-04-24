@@ -313,6 +313,7 @@ Cube Cube::addsub(const Cube& cube,int pm) const
     // Sum voxel by voxel
     for(unsigned long int i(0); i < Nvol; i++)
     {
+        // Sum (pm=1) or subtract (pm=-1) input data from data
         sumsub.data[i] = data[i] + pm * cube.data[i]; // PM is +1 (addition) or -1 (subtraction)
     }
 
@@ -321,10 +322,54 @@ Cube Cube::addsub(const Cube& cube,int pm) const
 
 Cube Cube::operator+(const Cube& cube) const
 {
+    // Call addsub as add (pm=+1)
     return addsub(cube,+1);
 }
 
 Cube Cube::operator-(const Cube& cube) const
 {
+    // Call addsub as subtract (pm=-1)
     return addsub(cube,-1);
+}
+
+Matrix Cube::reshape() const
+{
+    Matrix datat(Na,std::vector<std::vector<double>>(Nb,std::vector<double>(Nc,0.0)));
+
+    // Loop over axis a
+    for(unsigned int i(0); i < Na; i++)
+    {
+        // Loop over axis b
+        for(unsigned int j(0); j < Nb; j++)
+        {
+            // Loop over axis c
+            for(unsigned int k(0); k < Nc; k++)
+            {
+                // Tranform linear array DATA into rank-3 tensor DATAR
+                datat[i][j][k] = data[i * Nb * Nc + j * Nc + k];
+            }
+        }
+    }
+
+    return datat;
+}
+
+std::array<double,3> Cube::get_origin() const
+{
+    return origin;
+}
+
+double Cube::da() const
+{
+    return std::sqrt( a[0]*a[0] + a[1]*a[1] + a[2]*a[2] );
+}
+
+double Cube::db() const
+{
+    return std::sqrt( b[0]*b[0] + b[1]*b[1] + b[2]*b[2] );
+}
+
+double Cube::dc() const
+{
+    return std::sqrt( c[0]*c[0] + c[1]*c[1] + c[2]*c[2] );
 }
