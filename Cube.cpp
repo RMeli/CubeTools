@@ -356,20 +356,24 @@ Matrix Cube::reshape() const
 
 std::array<double,3> Cube::get_origin() const
 {
+    // Return origin of Cube file
     return origin;
 }
 
 double Cube::da() const
 {
+    // Compute length of axis a
     return std::sqrt( a[0]*a[0] + a[1]*a[1] + a[2]*a[2] );
 }
 
 double Cube::db() const
 {
+    // Compute length of axis b
     return std::sqrt( b[0]*b[0] + b[1]*b[1] + b[2]*b[2] );
 }
 
 double Cube::dc() const
 {
+    // Compute length of axis c
     return std::sqrt( c[0]*c[0] + c[1]*c[1] + c[2]*c[2] );
 }

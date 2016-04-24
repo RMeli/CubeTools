@@ -3,6 +3,9 @@
 #include <array>
 #include <vector>
 
+#ifndef CUBE_H
+#define CUBE_H
+
 // Define a rank-3 tensor
 typedef std::vector<std::vector<std::vector<double>>> Matrix;
 
@@ -72,3 +75,5 @@ private:
     std::vector<double> data;
 
 };
+
+#endif
