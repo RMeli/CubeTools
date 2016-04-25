@@ -354,6 +354,11 @@ Matrix Cube::reshape() const
     return datat;
 }
 
+std::vector<double> Cube::get_data() const
+{
+    return data;
+}
+
 std::array<double,3> Cube::get_origin() const
 {
     // Return origin of Cube file

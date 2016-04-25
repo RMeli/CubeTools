@@ -21,6 +21,10 @@
 #ifndef AVERAGE_H
 #define AVERAGE_H
 
+// Plane average along IDIR
 std::vector<std::array<double,2>> planar_average(Cube const& c,int idir);
+
+// Total average
+double total_average(Cube const& c);
 
 #endif

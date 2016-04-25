@@ -28,11 +28,11 @@ using namespace std;
 int main(int argc,char *argv[])
 {
     cerr << "\n###########" << endl;
-    cerr << "CUBE_PLANAVG" << endl;
+    cerr << "CUBE_TOTAVG" << endl;
     cerr << "###########\n" << endl;
 
     // Check the number of commandi line arguments
-    if( argc != 3)
+    if( argc != 2)
     {
         cerr << "ERROR: Invalid number of arguments." << endl;
         cerr << "       You should provide at least two cube files." << endl;
@@ -46,27 +46,11 @@ int main(int argc,char *argv[])
     Cube c(s);
     cerr << " ...Loaded!\n" << endl;
 
-    // Read IDIR from input file
-    unsigned int idir( atoi(argv[2]) );
+    cerr << "---------------" << endl;
+    cerr << "\nTotal average: " << total_average(c) << endl;
+    cerr << "\n---------------" << endl;
 
-    // Compute planar average along IDIR
-    std::vector<std::array<double,2>> pa( planar_average(c,idir) );
-
-    // Print comments at the beginning of the output file
-    cout << "# Coordinate along IDIR " + to_string(idir) + " ()";
-    cout << " | Cube planar average along IDIR " + to_string(idir) + " ()" << endl;
-    cout << "# BEWARE: The units are the one of the Cube file." << endl;
-
-    // Number of data points
-    unsigned int N( pa.size() );
-
-    for(unsigned int idx(0); idx < N; idx++)
-    {
-        cout << showpos << fixed << scientific << setprecision(6) << setw(15);
-        cout << pa[idx][0] << ' ' << pa[idx][1] << endl;
-    }
-
-    cerr << "\nCUBE_PLANAVG ended succesfully!\n" << endl;
+    cerr << "\nCUBE_TOTAVG ended succesfully!\n" << endl;
 
     return 0;
 }

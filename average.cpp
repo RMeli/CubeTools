@@ -132,3 +132,22 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
 
     return pa;
 }
+
+double total_average(Cube const& c)
+{
+    // Cube data (not reshaped)
+    std::vector<double> data( c.get_data() );
+
+    // Total number of voxels
+    double N(data.size());
+
+    // Sum over all data points
+    double sum(0);
+
+    for(unsigned int i(0); i < N; i++)
+    {
+        sum += data[i];
+    }
+
+    return sum / N;
+}

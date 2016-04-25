@@ -58,6 +58,9 @@ public:
     // Return reshaped DATA (rank-3 tensor instead of vector)
     Matrix reshape() const;
 
+    // Return data
+    std::vector<double> get_data() const;
+
     // Return Cube file origin
     std::array<double,3> get_origin() const;
 
