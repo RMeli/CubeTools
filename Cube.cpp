@@ -332,6 +332,29 @@ Cube Cube::operator-(const Cube& cube) const
     return addsub(cube,-1);
 }
 
+Cube Cube::operator*(double m) const
+{
+    // Create empty cube file
+    Cube mult;
+
+    // Copy current header to new cube file
+    mult.copy_header(*this);
+
+    // Total number of voxels
+    unsigned long int Nvol(Na*Nb*Nc);
+
+    // Preallocate data of new cube file
+    mult.data.resize(Nvol,0.0);
+
+    // Multiply voxel by voxel
+    for(unsigned long int i(0); i < Nvol; i++)
+    {
+        mult.data[i] = data[i] * m;
+    }
+
+    return mult;
+}
+
 Matrix Cube::reshape() const
 {
     Matrix datat(Na,std::vector<std::vector<double>>(Nb,std::vector<double>(Nc,0.0)));

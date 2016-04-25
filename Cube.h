@@ -54,6 +54,8 @@ public:
     Cube operator+(const Cube& cube) const;
     // Subtract two cube files
     Cube operator-(const Cube& cube) const;
+    // Multiply cube data by number
+    Cube operator*(double) const;
 
     // Return reshaped DATA (rank-3 tensor instead of vector)
     Matrix reshape() const;

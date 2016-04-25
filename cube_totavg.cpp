@@ -46,9 +46,10 @@ int main(int argc,char *argv[])
     Cube c(s);
     cerr << " ...Loaded!\n" << endl;
 
-    cerr << "---------------" << endl;
+    cerr << "----------------------------" << endl;
+    cerr << showpos << fixed << scientific << setprecision(6) << setw(19);
     cerr << "\nTotal average: " << total_average(c) << endl;
-    cerr << "\n---------------" << endl;
+    cerr << "\n----------------------------" << endl;
 
     cerr << "\nCUBE_TOTAVG ended succesfully!\n" << endl;
 
