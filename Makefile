@@ -3,7 +3,7 @@ CFLAGS=-Wall -O3 -std=c++11
 
 BIN=bin
 
-all: ${BIN} test cube_add cube_sub cube_planavg cube_totavg
+all: ${BIN} test cube_add cube_sub cube_mult cube_planavg cube_totavg
 
 test: main.o cube.o average.o interpolation.o
 	$(CXX) $(CFLAGS) main.o cube.o average.o interpolation.o -o ${BIN}/test.x
@@ -13,6 +13,9 @@ cube_add: cube_add.o cube.o
 
 cube_sub: cube_sub.o cube.o
 	$(CXX) $(CFLAGS) cube_sub.o cube.o -o ${BIN}/cube_sub.x
+	
+cube_mult: cube_mult.o cube.o
+	$(CXX) $(CFLAGS) cube_mult.o cube.o -o ${BIN}/cube_mult.x
 
 cube_planavg: cube_planavg.o cube.o average.o
 	$(CXX) $(CFLAGS) cube_planavg.o cube.o average.o -o ${BIN}/cube_planavg.x
@@ -28,6 +31,9 @@ cube_add.o: cube_add.cpp Cube.cpp
 
 cube_sub.o: cube_sub.cpp Cube.cpp
 	$(CXX) $(CFLAGS) -c cube_sub.cpp
+	
+cube_mult.o: cube_mult.cpp Cube.cpp
+	$(CXX) $(CFLAGS) -c cube_mult.cpp
 
 cube_planavg.o: cube_planavg.cpp Cube.cpp average.cpp
 	$(CXX) $(CFLAGS) -c cube_planavg.cpp
