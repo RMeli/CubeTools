@@ -28,8 +28,8 @@ std::vector<std::array<double,2>> fourier_interpolation(std::vector<std::array<d
 
     if( FN < N)
     {
-        std::cerr << "WARNING: Insufficient nodes for Fourier interpolation." << std::endl;
-        std::cerr << "         FN >= N is required." << std::endl;
+        std::cerr << "ERROR: Insufficient nodes for Fourier interpolation." << std::endl;
+        std::cerr << "       FN >= N is required." << std::endl;
 
         std::exit(-1);
     }
@@ -122,6 +122,7 @@ std::vector<std::array<double,2>> fourier_interpolation(std::vector<std::array<d
     // New vector storing new data points (interval and iterpolant)
     std::vector<std::array<double,2>> out(FN,std::array<double,2>{{0.0,0.0}});
 
+    // Fill output vector
     for(uint i(0); i < FN; i++)
     {
         // Store position
