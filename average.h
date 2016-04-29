@@ -27,4 +27,7 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir);
 // Total average
 double total_average(Cube const& c);
 
+// Gaussian weighted average (PBC activated by default)
+double g_average(Cube const& c, std::array<double,3> R, std::array<double,3>sigma, bool pbc = true);
+
 #endif

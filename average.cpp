@@ -15,8 +15,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cmath>
 
 #include "average.h"
+#include "function.h"
 
 std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
 {
@@ -150,4 +152,83 @@ double total_average(Cube const& c)
     }
 
     return sum / N;
+}
+
+double g_average(Cube const& c,std::array<double,3> R,std::array<double,3> sigma, bool pbc)
+{
+    // Cube data (not reshaped)
+    Matrix data( c.reshape() );
+
+    // Origin
+    std::array<double,3> o(c.get_origin());
+
+    // Compute number of elements for each direction (number of voxels)
+    unsigned int Na(data.size());
+    unsigned int Nb(data[0].size());
+    unsigned int Nc(data[0][0].size());
+
+    //std::cout << Na << ' ' << Nb << ' ' << Nc << std::endl;
+
+    // Weighted sum over all data points
+    double sum(0);
+
+    // Sum of weights
+    double weight(0);
+
+    double da( c.da() );
+    double db( c.db() );
+    double dc( c.dc() );
+
+    //std::cout << da << ' ' << db << ' ' << dc << std::endl;
+
+    //std::cout << R[0] << ' ' << R[1] << ' ' << R[2] << std::endl;
+
+    // Position
+    std::array<double,3> r{{0,0,0}};
+
+    // Distance
+    std::array<double,3> d{{0,0,0}};
+
+    double g(0);
+
+    for(unsigned int i(0); i < Na; i++)
+    {
+        for(unsigned int j(0); j < Nb; j++)
+        {
+            for(unsigned int k(0); k < Nc; k++)
+            {
+                // Compute current position
+                r[0] = i * da + o[0];
+                r[1] = j * db + o[1];
+                r[2] = k * dc + o[2];
+
+                //std::cout << r[0] << ' ' << r[1] << ' ' << r[2] << std::endl;
+
+                // Compute distance with respect to the gaussian center
+                d[0] = r[0] - R[0];
+                d[1] = r[1] - R[1];
+                d[2] = r[2] - R[2];
+
+                // Apply periodic boundary conditions
+                if(pbc == true)
+                {
+                    d[0] = c.pbc(d[0],1);
+                    d[1] = c.pbc(d[1],2);
+                    d[2] = c.pbc(d[2],3);
+                }
+
+                //std::cout << d[0] << ' ' << d[1] << ' ' << d[2] << std::endl;
+                //std::cout << std::sqrt(d[0]*d[0]+d[1]*d[1]+d[2]*d[2]) << std::endl;
+
+                // Compute weight (the average is 0 since d is already the r-R)
+                g = gaussian_3d(d,{{0,0,0}},sigma);
+
+                sum += data[i][j][k] * g;
+
+                weight += g;
+            }
+        }
+    }
+
+    return sum / weight;
 }
