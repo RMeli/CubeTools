@@ -1,5 +1,5 @@
 CXX=g++
-CFLAGS=-Wall -O3 -std=c++11
+CFLAGS=-Wall -O3 -std=c++11 -lfftw3 -lm
 
 BIN=bin
 
