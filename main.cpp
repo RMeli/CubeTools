@@ -20,6 +20,7 @@
 
 #include "Cube.h"
 #include "average.h"
+#include "interpolation.h"
 
 using namespace std;
 
@@ -27,7 +28,14 @@ int main()
 {
     Cube c("out.cube");
 
-    Matrix data(c.reshape());
+    std::array<double, 3> R{{11.936994,8.860931,3.615049}};
+    std::array<double,3> sigma{{1,0.001,1}};
+
+    cout << "G-average:" << g_average(c,R,sigma, true) << endl;
+
+    /*
+
+    FOURIER INTERPOLATION
 
     unsigned int Na(data.size());
     unsigned int Nb(data[0].size());
@@ -40,6 +48,17 @@ int main()
         cout << std::fixed << std::scientific << std::setprecision(5) << std::setw(13);
         cout << pa[idx][0] << ' ' << pa[idx][1] << endl;
     }
+
+    cout << "\n\n# Fourier Interpolation" << endl;
+
+    std::vector<std::array<double,2>> fpa(fourier_interpolation(pa,2));
+
+    for(unsigned int idx(0); idx < fpa.size(); idx++)
+    {
+        cout << std::fixed << std::scientific << std::setprecision(5) << std::setw(13);
+        cout << fpa[idx][0] << ' ' << fpa[idx][1] << endl;
+    }
+    */
 
     return 0;
 }

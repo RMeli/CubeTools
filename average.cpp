@@ -167,8 +167,6 @@ double g_average(Cube const& c,std::array<double,3> R,std::array<double,3> sigma
     unsigned int Nb(data[0].size());
     unsigned int Nc(data[0][0].size());
 
-    //std::cout << Na << ' ' << Nb << ' ' << Nc << std::endl;
-
     // Weighted sum over all data points
     double sum(0);
 
@@ -179,9 +177,21 @@ double g_average(Cube const& c,std::array<double,3> R,std::array<double,3> sigma
     double db( c.db() );
     double dc( c.dc() );
 
-    //std::cout << da << ' ' << db << ' ' << dc << std::endl;
-
-    //std::cout << R[0] << ' ' << R[1] << ' ' << R[2] << std::endl;
+    if( sigma[0] <= da)
+    {
+        std::cerr << "WARNING: Gaussian SD is possibly too small." << std::endl;
+        std::cerr << "         The SD along a is smaller than da." << std::endl;
+    }
+    if( sigma[1] <= db)
+    {
+        std::cerr << "WARNING: Gaussian SD is possibly too small." << std::endl;
+        std::cerr << "         The SD along b is smaller than db." << std::endl;
+    }
+    if( sigma[2] <= dc)
+    {
+        std::cerr << "WARNING: Gaussian SD is possibly too small." << std::endl;
+        std::cerr << "         The SD along c is smaller than dc." << std::endl;
+    }
 
     // Position
     std::array<double,3> r{{0,0,0}};
@@ -202,8 +212,6 @@ double g_average(Cube const& c,std::array<double,3> R,std::array<double,3> sigma
                 r[1] = j * db + o[1];
                 r[2] = k * dc + o[2];
 
-                //std::cout << r[0] << ' ' << r[1] << ' ' << r[2] << std::endl;
-
                 // Compute distance with respect to the gaussian center
                 d[0] = r[0] - R[0];
                 d[1] = r[1] - R[1];
@@ -216,9 +224,6 @@ double g_average(Cube const& c,std::array<double,3> R,std::array<double,3> sigma
                     d[1] = c.pbc(d[1],2);
                     d[2] = c.pbc(d[2],3);
                 }
-
-                //std::cout << d[0] << ' ' << d[1] << ' ' << d[2] << std::endl;
-                //std::cout << std::sqrt(d[0]*d[0]+d[1]*d[1]+d[2]*d[2]) << std::endl;
 
                 // Compute weight (the average is 0 since d is already the r-R)
                 g = gaussian_3d(d,{{0,0,0}},sigma);
