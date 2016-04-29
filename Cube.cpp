@@ -405,3 +405,36 @@ double Cube::dc() const
     // Compute length of axis c
     return std::sqrt( c[0]*c[0] + c[1]*c[1] + c[2]*c[2] );
 }
+
+double Cube::pbc(double d,unsigned int idir) const
+{
+    if( (idir < 1) or (idir > 3))
+    {
+        std::cerr << "ERROR: Invalid IDIR." << std::endl;
+        std::cerr << "       IDIR should be 1 (x), 2 (y) or 3 (z)" << std::endl;
+
+        std::exit(-1);
+    }
+
+    // Cell dimension along IDIR
+    double L(0);
+    double dd(0);
+
+    if(idir == 1)
+    {
+        dd = da();
+        L = Na * dd;
+    }
+    if(idir == 2)
+    {
+        dd = db();
+        L = Nb * dd;
+    }
+    if(idir == 3)
+    {
+        dd = dc();
+        L = Nc * dd;
+    }
+
+    return d - L * static_cast<int>(d / L + 0.5);
+}

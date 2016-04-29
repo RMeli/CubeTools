@@ -71,6 +71,9 @@ public:
     double db() const;
     double dc() const;
 
+    // Periodic boundary conditions
+    double pbc(double d,unsigned int idir) const;
+
 private:
 
     // Sum (PM=+1) or subtract (PM=-1) two cube files
