@@ -28,6 +28,11 @@ int main()
 {
     Cube c("out.cube");
 
+    array<double, 3> R(average_r(c));
+
+    cout << "Average R:" << endl;
+    cout << R[0] << ' ' << R[1] << ' ' << R[2] << endl;
+
     //std::array<double, 3> R{{11.936994,8.860931,3.615049}};
     //std::array<double,3> sigma{{1,0.001,1}};
 
@@ -35,6 +40,7 @@ int main()
 
     //FOURIER INTERPOLATION
 
+    /*
     std::vector<std::array<double,2>> pa(planar_average(c,3));
 
     cerr << pa.size() << std::endl;
@@ -55,6 +61,7 @@ int main()
         cout << std::fixed << std::scientific << std::setprecision(5) << std::setw(13);
         cout << fpa[idx][0] << ' ' << fpa[idx][1] << endl;
     }
+    */
 
     return 0;
 }
