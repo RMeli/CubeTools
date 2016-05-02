@@ -15,45 +15,48 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include <iostream>
 #include <cstdlib>
+#include <iomanip>
 
-#include "Cube.h"
+#include "average.h"
 
 using namespace std;
 
 int main(int argc,char *argv[])
 {
     cerr << "\n##########" << endl;
-    cerr << "CUBE_MULT" << endl;
+    cerr << "CUBE_AVGR" << endl;
     cerr << "##########\n" << endl;
 
     // Check the number of commandi line arguments
-    if( argc != 3)
+    if( argc != 2)
     {
         cerr << "ERROR: Invalid number of arguments." << endl;
-        cerr << "       You should provide one cube file and a number." << endl;
+        cerr << "       You should provide one cube file." << endl;
 
         exit(-1);
     }
 
-    // Load first cube file
+    // Load cube file
     string s(argv[1]);
     cerr << "Loading... " << s;
-    Cube tmp(s);
+    Cube in(s);
     cerr << " ...Loaded!" << endl;
 
-    // Read multiplicative constant
-    unsigned int m( atoi(argv[2]) );
+    // Compute average R
+    array<double,3> R(average_r(in));
 
-    // Compute multiplication
-    Cube out( tmp * m );
+    // Printe result
+    cout << endl;
+    cout << "---------------------------------------" << endl << endl;
+    cerr << "# Average R:" << endl;
+    cerr << fixed << scientific << setprecision(5) << setw(13) << R[0];
+    cerr << fixed << scientific << setprecision(5) << setw(13) << R[1];
+    cerr << fixed << scientific << setprecision(5) << setw(13) << R[2] << endl;
+    cout << endl << "---------------------------------------" << endl;
 
-    // Print new Cube file
-    out.print(cout);
-
-    cerr << "\nCUBE_MULT ended succesfully!\n" << endl;
+    cerr << "\nCUBE_AVGR ended succesfully!\n" << endl;
 
     return 0;
 }
