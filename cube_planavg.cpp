@@ -22,6 +22,7 @@
 
 #include "Cube.h"
 #include "average.h"
+#include "interpolation.h"
 
 using namespace std;
 
@@ -32,10 +33,12 @@ int main(int argc,char *argv[])
     cerr << "###########\n" << endl;
 
     // Check the number of commandi line arguments
-    if( argc != 3)
+    if( argc != 3 and argc != 4)
     {
         cerr << "ERROR: Invalid number of arguments." << endl;
-        cerr << "       You should provide at least two cube files." << endl;
+        cerr << "       You should provide a cube file and a direction." << endl;
+        cerr << "       Optionally you can provide the number of data points." << endl;
+        cerr << "       Additional data points are obtained by Foruier interpolation." << endl;
 
         exit(-1);
     }
@@ -48,6 +51,13 @@ int main(int argc,char *argv[])
 
     // Read IDIR from input file
     unsigned int idir( atoi(argv[2]) );
+
+    unsigned int npoints(0);
+
+    if(argc == 4)
+    {
+        npoints = atoi(argv[3]);
+    }
 
     // Compute planar average along IDIR
     std::vector<std::array<double,2>> pa( planar_average(c,idir) );
@@ -64,6 +74,23 @@ int main(int argc,char *argv[])
     {
         cout << showpos << fixed << scientific << setprecision(6) << setw(15);
         cout << pa[idx][0] << ' ' << pa[idx][1] << endl;
+    }
+
+    if(argc == 4)
+    {
+        // Perform Fourier interpolation
+        std::vector<std::array<double,2>> fpa(fourier_interpolation(pa,npoints));
+
+        // Print comments at the beginning of the Fourier data set
+        cout << "\n\n# Coordinate along IDIR " + to_string(idir) + " ()";
+        cout << " | Fourier interpolated planar average along IDIR " + to_string(idir) + " ()" << endl;
+        cout << "# BEWARE: The units are the one of the Cube file." << endl;
+
+        for(unsigned int idx(0); idx < npoints; idx++)
+        {
+            cout << showpos << fixed << scientific << setprecision(6) << setw(15);
+            cout << fpa[idx][0] << ' ' << fpa[idx][1] << endl;
+        }
     }
 
     cerr << "\nCUBE_PLANAVG ended succesfully!\n" << endl;

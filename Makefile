@@ -17,8 +17,8 @@ cube_sub: cube_sub.o cube.o
 cube_mult: cube_mult.o cube.o
 	$(CXX) $(CFLAGS) cube_mult.o cube.o -o ${BIN}/cube_mult.x
 
-cube_planavg: cube_planavg.o cube.o average.o function.o
-	$(CXX) $(CFLAGS) cube_planavg.o cube.o average.o function.o -o ${BIN}/cube_planavg.x
+cube_planavg: cube_planavg.o cube.o average.o function.o interpolation.o
+	$(CXX) $(CFLAGS) cube_planavg.o cube.o average.o function.o interpolation.o -o ${BIN}/cube_planavg.x
 	
 cube_totavg: cube_totavg.o cube.o average.o function.o
 	$(CXX) $(CFLAGS) cube_totavg.o cube.o average.o function.o -o ${BIN}/cube_totavg.x
@@ -38,7 +38,7 @@ cube_sub.o: cube_sub.cpp Cube.cpp
 cube_mult.o: cube_mult.cpp Cube.cpp
 	$(CXX) $(CFLAGS) -c cube_mult.cpp
 
-cube_planavg.o: cube_planavg.cpp Cube.cpp average.cpp
+cube_planavg.o: cube_planavg.cpp Cube.cpp average.cpp interpolation.cpp
 	$(CXX) $(CFLAGS) -c cube_planavg.cpp
 
 cube_totavg.o: cube_totavg.cpp Cube.cpp average.cpp
