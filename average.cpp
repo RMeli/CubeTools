@@ -238,6 +238,9 @@ double g_average(Cube const& c,std::array<double,3> R,std::array<double,3> sigma
     return sum / weight;
 }
 
+// -----------------
+// TODO: Berry phase
+// -----------------
 std::array<double,3> average_r(Cube const& c)
 {
     // Compute number of elements for each direction (number of voxels)

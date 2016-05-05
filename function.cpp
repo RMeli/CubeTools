@@ -28,7 +28,7 @@ double gaussian_1d(double r,double mu,double sigma)
 
 double gaussian_3d(std::array<double,3> r,std::array<double,3> mu,std::array<double,3> sigma)
 {
-    double g(1);
+    double g(1.);
 
     for(unsigned int i(0); i < 3; i++)
     {

@@ -74,6 +74,9 @@ public:
     // Periodic boundary conditions
     double pbc(double d,unsigned int idir) const;
 
+    // Get atoms
+    std::vector<std::array<double,5>> get_atoms() const;
+
 private:
 
     // Sum (PM=+1) or subtract (PM=-1) two cube files

@@ -438,3 +438,8 @@ double Cube::pbc(double d,unsigned int idir) const
 
     return d - L * static_cast<int>(d / L + 0.5);
 }
+
+std::vector<std::array<double,5>> Cube::get_atoms() const
+{
+    return atoms;
+}
