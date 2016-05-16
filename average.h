@@ -30,7 +30,4 @@ double total_average(Cube const& c);
 // Gaussian weighted average (PBC activated by default)
 double g_average(Cube const& c, std::array<double,3> R, std::array<double,3>sigma, bool pbc = true);
 
-// Average position of the Cube distribution
-std::array<double,3> average_r(Cube const& c);
-
 #endif

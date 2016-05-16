@@ -3,7 +3,7 @@ CFLAGS=-Wall -O3 -std=c++11 -lfftw3 -lm
 
 BIN=bin
 
-all: ${BIN} test cube_add cube_sub cube_mult cube_planavg cube_totavg cube_avgr cube_local
+all: ${BIN} test cube_add cube_sub cube_mult cube_planavg cube_totavg cube_local
 
 test: main.o cube.o average.o interpolation.o function.o
 	$(CXX) $(CFLAGS) main.o cube.o average.o interpolation.o function.o -o ${BIN}/test.x
@@ -22,9 +22,6 @@ cube_planavg: cube_planavg.o cube.o average.o function.o interpolation.o
 	
 cube_totavg: cube_totavg.o cube.o average.o function.o
 	$(CXX) $(CFLAGS) cube_totavg.o cube.o average.o function.o -o ${BIN}/cube_totavg.x
-	
-cube_avgr: cube_avgr.o cube.o average.o function.o
-	$(CXX) $(CFLAGS) cube_avgr.o cube.o average.o function.o -o ${BIN}/cube_avgr.x
 	
 cube_local: cube_local.o cube.o average.o function.o
 	$(CXX) $(CFLAGS) cube_local.o cube.o average.o function.o -o ${BIN}/cube_local.x
@@ -46,9 +43,6 @@ cube_planavg.o: cube_planavg.cpp Cube.cpp average.cpp interpolation.cpp
 
 cube_totavg.o: cube_totavg.cpp Cube.cpp average.cpp
 	$(CXX) $(CFLAGS) -c cube_totavg.cpp
-	
-cube_avgr.o: cube_avgr.cpp Cube.cpp average.cpp
-	$(CXX) $(CFLAGS) -c cube_avgr.cpp
 	
 cube_local.o: cube_local.cpp Cube.cpp average.cpp function.cpp
 	$(CXX) $(CFLAGS) -c cube_local.cpp
