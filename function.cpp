@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2016 Rocco Meli (rocco.meli@epfl.ch)
+    Copyright (C) 2016 Rocco Meli (rocco.meli@epfl.ch)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

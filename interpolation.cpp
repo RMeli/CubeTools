@@ -22,7 +22,7 @@
 
 #include "interpolation.h"
 
-std::vector<std::array<double,2>> fourier_interpolation(std::vector<std::array<double,2>> const& in, uint FN)
+Table fourier_interpolation(Table const& in, uint FN)
 {
     uint N(in.size());
 
@@ -120,7 +120,7 @@ std::vector<std::array<double,2>> fourier_interpolation(std::vector<std::array<d
     double dl( (in[1][0] - in[0][0]));
 
     // New vector storing new data points (interval and iterpolant)
-    std::vector<std::array<double,2>> out(FN,std::array<double,2>{{0.0,0.0}});
+    Table out(FN,std::array<double,2>{{0.0,0.0}});
 
     // Fill output vector
     for(uint i(0); i < FN; i++)

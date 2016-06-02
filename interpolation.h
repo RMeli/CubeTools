@@ -18,12 +18,12 @@
 #include <vector>
 #include <array>
 
+#include "typedef.h"
+
 #ifndef INTERPOLATION_H
 #define INTERPOLATION_H
 
-typedef unsigned int uint;
-
 // Fourier interpolation
-std::vector<std::array<double,2>> fourier_interpolation(std::vector<std::array<double,2>> const& in, uint m);
+Table fourier_interpolation(Table const& in, uint m);
 
 #endif

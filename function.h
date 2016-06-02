@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2016 Rocco Meli (rocco.meli@epfl.ch)
+    Copyright (C) 2016 Rocco Meli (rocco.meli@epfl.ch)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 // 1D Gaussian function
 double gaussian_1d(double r,double mu,double sigma);
+
 // 3D Gaussian function
 double gaussian_3d(std::array<double,3> R,std::array<double,3> mu,std::array<double,3> sigma);
 

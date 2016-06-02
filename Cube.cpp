@@ -418,6 +418,8 @@ double Cube::pbc(double d,unsigned int idir) const
 
     // Cell dimension along IDIR
     double L(0);
+
+    // Voxel dimension along IDIR
     double dd(0);
 
     if(idir == 1)

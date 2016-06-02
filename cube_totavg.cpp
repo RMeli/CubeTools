@@ -35,7 +35,7 @@ int main(int argc,char *argv[])
     if( argc != 2)
     {
         cerr << "ERROR: Invalid number of arguments." << endl;
-        cerr << "       You should provide at least two cube files." << endl;
+        cerr << "       You should provide one cube files." << endl;
 
         exit(-1);
     }
