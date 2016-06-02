@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2016 Rocco Meli (rocco.meli@epfl.ch)
+    Copyright (C) 2016 Rocco Meli (rocco.meli@epfl.ch)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,9 +19,11 @@
 
 #include "average.h"
 #include "function.h"
+#include "interpolation.h"
 
-std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
+Table planar_average(Cube const& c,int idir)
 {
+    // Check IDIR value
     if( (idir < 1) or (idir > 3))
     {
         std::cerr << "ERROR: Invalid IDIR." << std::endl;
@@ -31,16 +33,21 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
     }
 
     // Extract data from cube as rank-3 tensor
+    // First index: direction A (x)
+    // Second index: direction B (y)
+    // Third index: direction C (z)
     Matrix data(c.reshape());
 
+    // Extract origin
     std::array<double,3> o(c.get_origin());
 
     // Compute number of elements for each direction (number of voxels)
-    unsigned int Na(data.size());
-    unsigned int Nb(data[0].size());
-    unsigned int Nc(data[0][0].size());
+    unsigned int Na(data.size()); // Direction A (x)
+    unsigned int Nb(data[0].size()); // Direction B (y)
+    unsigned int Nc(data[0][0].size()); // Direction C (z)
 
-    std::vector<std::array<double,2>> pa;
+    // Declare planar average table (empty)
+    Table pa;
 
     if(idir == 1)
     {
@@ -50,7 +57,7 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
         // Allocate memory for planar average
         pa.resize(Na,std::array<double,2>{{0.0,0.0}});
 
-        // Compute the planar average along i
+        // Loop over IDIR=1 (direction A)
         for(unsigned int i(0); i < Na; i++)
         {
             double a(0);
@@ -67,7 +74,7 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
             // Compute coordinate
             pa[i][0] = i * d + o[0];
 
-            // Compute average (divide A by the total number of voxels in plane i)
+            // Compute average (divide sum by the total number of voxels in plane i)
             pa[i][1] = a / (Nb * Nc);
         }
     }
@@ -80,7 +87,7 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
         // Allocate memory for planar average
         pa.resize(Nb,std::array<double,2>{{0.0,0.0}});
 
-        // Compute the planar average along i
+        // Loop over IDIR=2 (direction B)
         for(unsigned int j(0); j < Nb; j++)
         {
             double a(0);
@@ -89,7 +96,7 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
             {
                 for(unsigned int k(0); k < Nc; k++)
                 {
-                    // Sum all the element of plane i
+                    // Sum all the element of plane j
                     a += data[i][j][k];
                 }
             }
@@ -97,7 +104,7 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
             // Compute coordinate
             pa[j][0] = j * d + o[1];
 
-            // Compute average (divide A by the total number of voxels in plane i)
+            // Compute average (divide sum by the total number of voxels in plane j)
             pa[j][1] = a / (Na * Nc);
         }
     }
@@ -110,7 +117,7 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
         // Allocate memory for planar average
         pa.resize(Nc,std::array<double,2>{{0.0,0.0}});
 
-        // Compute the planar average along i
+        // Loop over IDIR=3 (direction C)
         for(unsigned int k(0); k < Nc; k++)
         {
             double a(0);
@@ -119,7 +126,7 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
             {
                 for(unsigned int j(0); j < Nb; j++)
                 {
-                    // Sum all the element of plane i
+                    // Sum all the element of plane k
                     a += data[i][j][k];
                 }
             }
@@ -127,13 +134,62 @@ std::vector<std::array<double,2>> planar_average(Cube const& c,int idir)
             // Compute coordinate
             pa[k][0] = k * d + o[2];
 
-            // Compute average (divide A by the total number of voxels in plane i)
+            // Compute average (divide sum by the total number of voxels in plane k)
             pa[k][1] = a / (Na * Nb);
         }
     }
 
     return pa;
 }
+
+Table macro_average(Cube const& c,int idir, int m, double sigma)
+{
+    // Compute planar average
+    Table pa( planar_average(c,idir) );
+
+    if(m == -1)
+    {
+        // Fourier interpolation is not necessary
+        m = pa.size();
+    }
+
+    // Increase the density of points of the planar average
+    Table fpa( fourier_interpolation(pa,m) );
+
+    // Total number of points
+    uint N(fpa.size());
+
+    // Macroscopic average
+    Table ma(N,std::array<double,2>{0,0});
+
+    double norm(0);
+    double sum(0);
+    double r(0);
+
+    for(uint i(0); i < N; i++)
+    {
+        norm = 0;
+        sum = 0;
+
+        for(uint j(0); j < N; j++)
+        {
+            // TODO: Without PBC
+            r = c.pbc(fpa[j][1] - fpa[i][1],idir);
+
+            norm += gaussian_1d(r,0,sigma);
+            sum += fpa[j][1] * norm;
+        }
+
+        // Coordinate along IDIR
+        ma[i][0] = fpa[i][0];
+
+        // Macroscopic average
+        ma[i][1] = sum / norm;
+    }
+
+    return ma;
+}
+
 
 double total_average(Cube const& c)
 {

@@ -22,7 +22,10 @@
 #define AVERAGE_H
 
 // Plane average along IDIR
-std::vector<std::array<double,2>> planar_average(Cube const& c,int idir);
+Table planar_average(Cube const& c,int idir);
+
+// Macroscopic average along IDIR
+Table macro_average(Cube const& c,int idir,int m,double sigma);
 
 // Total average
 double total_average(Cube const& c);
