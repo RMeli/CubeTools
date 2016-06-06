@@ -3,7 +3,7 @@ CFLAGS=-Wall -O3 -std=c++11 -lfftw3 -lm
 
 BIN=bin
 
-all: ${BIN} test cube_add cube_sub cube_mult cube_planavg cube_totavg cube_local cube_macroavg
+all: ${BIN} test cube_add cube_sub cube_mult cube_planavg cube_totavg cube_local cube_macroavg cube_shift
 
 test: main.o cube.o average.o interpolation.o function.o
 	$(CXX) $(CFLAGS) main.o cube.o average.o interpolation.o function.o -o ${BIN}/test.x
@@ -29,6 +29,9 @@ cube_local: cube_local.o cube.o average.o function.o interpolation.o
 cube_macroavg: cube_macroavg.o cube.o average.o function.o interpolation.o
 	$(CXX) $(CFLAGS) cube_macroavg.o cube.o average.o function.o interpolation.o -o ${BIN}/cube_macroavg.x
 
+cube_shift: cube_shift.o cube.o
+	$(CXX) $(CFLAGS) cube_shift.o cube.o -o ${BIN}/cube_shift.x
+
 main.o: main.cpp Cube.cpp average.cpp interpolation.cpp function.cpp
 	$(CXX) $(CFLAGS) -c main.cpp
 
@@ -52,6 +55,9 @@ cube_local.o: cube_local.cpp Cube.cpp average.cpp function.cpp
 
 cube_macroavg.o: cube_macroavg.cpp Cube.cpp average.cpp function.cpp interpolation.cpp
 	$(CXX) $(CFLAGS) -c cube_macroavg.cpp
+
+cube_shift.o: cube_shift.cpp Cube.cpp
+	$(CXX) $(CFLAGS) -c cube_shift.cpp
 
 cube.o: Cube.cpp
 	$(CXX) $(CFLAGS) -c Cube.cpp

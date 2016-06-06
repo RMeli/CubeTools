@@ -80,6 +80,7 @@ void Cube::load(std::string fname)
 void Cube::print(std::ostream& out) const
 {
     print_header(out);
+    print_atoms(out);
     print_data(out);
 }
 
@@ -120,7 +121,10 @@ void Cube::print_header(std::ostream& out) const
         out << std::fixed <<std::setprecision(6) << std::setw(12) << c[i];
     }
     out << std::endl;
+}
 
+void Cube::print_atoms(std::ostream& out) const
+{
     // Print atoms
     for(unsigned int i(0); i < Natoms; i++)
     {
@@ -388,6 +392,43 @@ std::array<double,3> Cube::get_origin() const
     return origin;
 }
 
+std::array<double,3> Cube::get_a() const
+{
+    // Return axis s
+    return a;
+}
+
+std::array<double,3> Cube::get_b() const
+{
+    // Return axis b
+    return b;
+}
+
+std::array<double,3> Cube::get_c() const
+{
+    // Return axis c
+    return c;
+}
+
+
+long int Cube::get_Na() const
+{
+    // Return number of voxels along a
+    return Na;
+}
+
+long int Cube::get_Nb() const
+{
+    // Return number of voxels along b
+    return Nb;
+}
+
+long int Cube::get_Nc() const
+{
+    // Return number of voxels along c
+    return Nc;
+}
+
 double Cube::da() const
 {
     // Compute length of axis a
@@ -444,4 +485,50 @@ double Cube::pbc(double d,unsigned int idir) const
 std::vector<std::array<double,5>> Cube::get_atoms() const
 {
     return atoms;
+}
+
+std::vector<std::array<double,5>> Cube::shift_atoms(double aa,double bb,double cc)
+{
+    double La( Na * da() );
+    double Lb( Nb * db() );
+    double Lc( Nc * dc() );
+
+    double da(0);
+    double db(0);
+    double dc(0);
+
+    std::vector<std::array<double,5>> shifted_atoms(Natoms,std::array<double,5>{{0,0,0,0,0}});
+
+    for(unsigned int i(0); i < Natoms; i++)
+    {
+        shifted_atoms[i][0] = atoms[i][0];
+        shifted_atoms[i][1] = atoms[i][0];
+
+        shifted_atoms[i][2] = atoms[i][2] + aa * La;
+        shifted_atoms[i][3] = atoms[i][3] + bb * Lb;
+        shifted_atoms[i][4] = atoms[i][4] + cc * Lc;
+
+        da = shifted_atoms[i][2] - origin[0];
+
+        if( da > La )
+        {
+            shifted_atoms[i][2] -= La;
+        }
+
+        db = shifted_atoms[i][3] - origin[1];
+
+        if( db > Lb )
+        {
+            shifted_atoms[i][3] -= Lb;
+        }
+
+        dc = shifted_atoms[i][4] - origin[2];
+
+        if( dc > Lc )
+        {
+            shifted_atoms[i][4] -= Lc;
+        }
+    }
+
+    return shifted_atoms;
 }

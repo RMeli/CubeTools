@@ -34,12 +34,13 @@ public:
     // Create cube file from data
     Cube(std::string fname);
 
-    // Load CUbe fro file
+    // Load Cube fro file
     void load(std::string filename);
 
     // Printing routines (whole cube, only header or only data)
     void print(std::ostream& out) const;
     void print_header(std::ostream& out) const;
+    void print_atoms(std::ostream& out) const;
     void print_data(std::ostream& out,int lines=0) const;
 
     // COmpare headers
@@ -65,6 +66,17 @@ public:
     // Return Cube file origin
     std::array<double,3> get_origin() const;
 
+    // Return axis
+    std::array<double,3> get_a() const;
+    std::array<double,3> get_b() const;
+    std::array<double,3> get_c() const;
+
+    // Return number of voxels
+    long int get_Na() const;
+    long int get_Nb() const;
+    long int get_Nc() const;
+
+
     // Length of the voxel along a, b or c
     double da() const;
     double db() const;
@@ -75,6 +87,9 @@ public:
 
     // Get atoms
     std::vector<std::array<double,5>> get_atoms() const;
+
+    // Shift atoms
+    std::vector<std::array<double,5>> shift_atoms(double aa,double bb,double cc);
 
 private:
 
